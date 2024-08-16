@@ -1,0 +1,62 @@
+The functions provided are designed to process chemical formulas and generate feature vectors based on elemental properties. 
+Here's a summary of their purpose and how they work together:
+
+### Overview
+
+These functions aim to:
+
+1. **Parse Chemical Formulas**: Convert chemical formulas into a structured format that represents the composition of elements in the formula.
+2. **Calculate Elemental Properties**: Compute various features for each formula based on its elemental composition.
+3. **Generate Feature Matrix**: Create a feature matrix from these computed properties to be used in machine learning or data analysis tasks.
+
+### Functions and Their Roles
+
+1. **`parse_formula(formula)`**:
+   - **Purpose**: Converts a chemical formula into a dictionary of elemental compositions, where keys are element symbols and values are their quantities in the formula.
+   - **Process**:
+     - Parses the formula to handle nested groups and factors.
+     - Uses regular expressions to extract element symbols and their amounts.
+     - Expands nested groups and processes the formula recursively.
+
+2. **`_fractional_composition(formula)`**:
+   - **Purpose**: Computes the fractional composition of each element in the formula relative to the total number of atoms.
+   - **Process**:
+     - Calls `parse_formula` to get elemental amounts.
+     - Calculates the fraction of each element compared to the total number of atoms.
+     - Filters out elements with very small amounts.
+
+3. **`_element_composition(formula)`**:
+   - **Purpose**: Computes the absolute composition of each element in the formula.
+   - **Process**:
+     - Calls `parse_formula` to get elemental amounts.
+     - Filters out elements with very small amounts.
+
+4. **`_assign_features(formula, elem_props)`**:
+   - **Purpose**: Assigns features to each formula based on its elemental composition and properties from a database.
+   - **Process**:
+     - Uses `_fractional_composition` and `_element_composition` to get element data.
+     - Computes average, sum, variance, and range of properties for elements in the formula.
+     - Constructs a feature vector combining these statistics.
+
+5. **`generate_features(df, reset_index=True)`**:
+   - **Purpose**: Generates a feature matrix from a DataFrame containing chemical formulas and target values.
+   - **Process**:
+     - Applies `_assign_features` to each formula in the DataFrame.
+     - Constructs a DataFrame `X` of features and a Series `y` of target values.
+     - Handles missing values by filling them with the median of each column.
+     - Optionally resets the index of the resulting DataFrame and Series.
+
+### Intended Outcome
+
+The combined purpose of these functions is to transform a dataset of chemical formulas into a structured format suitable 
+for analysis or machine learning. Specifically:
+
+- **Feature Extraction**: The functions extract and compute various properties of the elements in each formula.
+- **Data Preparation**: The `generate_features` function prepares a feature matrix and target vector for use in modeling or analysis.
+- **Handling Missing Values**: Missing values in the feature matrix are handled to ensure the data is ready for machine learning algorithms.
+
+### Practical Use
+
+In practice, these functions might be used in a scenario where you want to analyze or predict properties of chemical compounds 
+based on their formulas. For example, you might use them in a materials science application to predict the properties of new compounds 
+based on their elemental composition.
