@@ -1,7 +1,3 @@
-Here's a polished version of your README file:
-
----
-
 # Materials Property Prediction Models
 
 This repository contains models designed to predict material properties based on their composition. 
@@ -30,3 +26,6 @@ This repository contains models designed to predict material properties based on
 
 - **all_properties_SVM.ipynb**: Extends the SVM model to predict all properties (Bulk Modulus, Poisson Ratio, Shear Modulus, and Elastic Anisotropy) based on the findings from the model comparison. It was discovered that SVM performs well only for Bulk Modulus and Shear Modulus, with recommendations provided for addressing this limitation.
 
+## Review Paper
+Materials discovery and design using machine learning by Yue Liu, Tianlu Zhao ,Wangwei Ju , Siqi Shi
+This review paper provides a comprehensive overview of the application of machine learning techniques in the field of materials science. It covers various methods used for materials discovery and design, discusses the challenges and opportunities in the field, and summarizes recent advances and trends. Review papers like this are valuable for understanding the current state of research and identifying areas for future exploration.
