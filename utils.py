@@ -243,12 +243,14 @@ def rf_feature_importance(rf, X_train, N='all', std_deviation=False):
     plt.xlim([-1, N])
     return X_train.columns.values[indices]
 
-def plot_act_vs_pred(y_actual, y_predicted):
+def plot_act_vs_pred(y_actual, y_predicted, title = None):
     text_size = 20
     plt.figure(figsize=(8, 6))
     plt.plot(y_actual, y_predicted, marker='o', markersize=14, mfc='#0077be', color='k', linestyle='none', alpha=0.6)
     plt.plot([min([min(y_actual), min(y_predicted)]), max([max(y_actual), max(y_predicted)])], [min([min(y_actual), min(y_predicted)]), max([max(y_actual), max(y_predicted)])], 'k--')
     # plt.title("actual vs. predicted values", size=text_size)
+    if title:
+        plt.title(title, size = text_size)
     plt.minorticks_on()
     plt.tick_params(direction='in', length=15, bottom=True, top=True, left=True, right=True)
     plt.tick_params(direction='in', length=7, bottom=True, top=True, left=True, right=True, which='minor')
@@ -260,6 +262,7 @@ def plot_act_vs_pred(y_actual, y_predicted):
     plt.yticks(size=text_size)
     plt.xlabel('Actual', size=text_size)
     plt.ylabel('Predicted', size=text_size)
+
 
 def get_roc_auc(actual, probability, plot=False):
         fpr, tpr, tttt = roc_curve(actual, probability, pos_label=1)

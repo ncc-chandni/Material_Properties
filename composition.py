@@ -404,6 +404,60 @@ def generate_features(df, reset_index=True):
     X[cols] = X[cols].fillna(median_values.iloc[0])
     return X, y, formulae
 
+def generate_muliple_features(df, reset_index=True):
+    '''
+    Return
+    ----------
+    X: pd.DataFrame()
+        Feature Matrix with NaN values filled using the median feature value for dataset
+    y: pd.Series()
+        Target values
+    '''
+
+    # elem_props = pd.read_excel('data/element_properties.xlsx')
+    # elem_props.index = elem_props['element'].values
+    # elem_props.drop(['element'], inplace=True, axis=1)
+    # # print(elem_props.head())
+    # # elem_props = pd.read_json('element_chem.json').T
+    column_names = np.concatenate(['avg_'+elem_props.columns.values,  'sum_'+elem_props.columns.values, 'var_'+elem_props.columns.values, 'range_'+elem_props.columns.values])
+
+    # make empty list where we will store the feature vectors
+    features = []
+    # make empty list where we will store the property value
+    targets = []
+    # store formula
+    formulae = []
+    # add the values to the list using a for loop
+    for idx, row in df.iterrows():
+        formula = row['formula']
+        target_values = row.drop('formula').values
+        features.append(_assign_features(formula, elem_props))
+        targets.append(target_values)
+        formulae.append(formula)
+
+    # split feature vectors and targets as X and y
+    X = pd.DataFrame(features, columns=column_names, index=df.index.values)
+    y = pd.DataFrame(targets, index=df.index.values, columns=df.columns[1:])
+    formulae = pd.Series(formulae, index=df.index.values, name='formula')
+    # drop elements that aren't included in the elmenetal properties list.
+    # These will be returned as feature rows completely full of Nan values.
+    X.dropna(inplace=True, how='all')
+    y = y.loc[X.index]
+    formulae = formulae.loc[X.index]
+
+    if reset_index is True:
+        # reset dataframe indices to simplify code later.
+        X.reset_index(drop=True, inplace=True)
+        y.reset_index(drop=True, inplace=True)
+        formulae.reset_index(drop=True, inplace=True)
+
+    # get the column names
+    cols = X.columns.values
+    # find the mean value of each column
+    median_values = X[cols].median()
+    # fill the missing values in each column with the columns mean value
+    X[cols] = X[cols].fillna(median_values.iloc[0])
+    return X, y, formulae
 
 
 
